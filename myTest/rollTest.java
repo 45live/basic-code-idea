@@ -9,7 +9,9 @@ public class rollTest {
     public static void main(String[] args) {
         /*
         班级里有n个学生，学生属性：姓名，年龄，性别
-        实现随机点名器
+        实现随机点名器：
+        被点到的学生不会再被点到，但是如果班级中的所有学生都被点完了，
+        需要重新开启第二轮点名
          */
 
         //1.定义集合
@@ -19,6 +21,7 @@ public class rollTest {
         ArrayList<String> record = new ArrayList<>();
 
         //3.随机点名，不重复
+        //也可以将当前随机到的数据进行remove, 这样的话下次随机到的就一定不是该元素了
         Random r = new Random();
         Scanner sc = new Scanner(System.in);
         String choose = sc.nextLine();
