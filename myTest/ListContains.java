@@ -1,8 +1,6 @@
 package myTest;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class ListContains {
     public static void main(String[] args) {
@@ -25,5 +23,23 @@ public class ListContains {
 
         ArrayList<String> city3 = new ArrayList<>();
         Collections.addAll(city3, "石家庄市", "唐山市", "邢台市", "保定市", "张家口市");
+
+        hm.put("江苏省", city1);
+        hm.put("湖北省", city2);
+        hm.put("河北省", city3);
+
+        Set<Map.Entry<String, ArrayList<String>>> entries = hm.entrySet();
+        for (Map.Entry<String, ArrayList<String>> entry : entries) {
+            System.out.print(entry.getKey() + "=");
+            ArrayList<String> value = entry.getValue();
+            for (int i = 0; i < value.size(); i++) {
+                if (i == value.size() - 1) {
+                    System.out.print(value.get(i));
+                    break;
+                }
+                System.out.print(value.get(i) + "，");
+            }
+            System.out.println();
+        }
     }
 }

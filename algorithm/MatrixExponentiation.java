@@ -4,6 +4,11 @@ import java.util.Scanner;
 
 public class MatrixExponentiation {
     public static void main(String[] args) {
+        //计算矩阵的次幂，递归
+        //A2=A1*A1
+        //A3=A2*A1
+        //A4=A3*A1
+        //ctrl + shfit + o 去除导入的没有用的包
         Scanner sc = new Scanner(System.in);
         int row = sc.nextInt();
         int n = sc.nextInt();
@@ -14,50 +19,53 @@ public class MatrixExponentiation {
             }
         }
         sc.close();
+        //存储结果的数组，同时作为中间件被传输
+        //初始化结果数组
+        int[][] result = new int[row][row];
+        for (int i = 0; i < row; i++) {
+            result[i][i] = 1;
+        }
 
-        int[][] result = calculateMatrixPower(arr, n);
-
-        for (int i = 0; i < result.length; i++) {
-            for (int j = 0; j < result[0].length; j++) {
-                System.out.print(result[i][j] + " ");
+        int[][] calculateMatrix = calculateMatrix(result, arr, n);
+        for (int i = 0; i < calculateMatrix.length; i++) {
+            for (int j = 0; j < calculateMatrix.length; j++) {
+                System.out.print(calculateMatrix[i][j] + " ");
             }
             System.out.println();
         }
     }
 
-    public static int[][] multiplyMatrices(int[][] a, int[][] b) {
-        //矩阵相乘，前一个矩阵的行和后一个矩阵的列必然相等
-        int m = a.length;
-        int n = a[0].length;
-        int p = b[0].length;
-        int[][] result = new int[m][p];
-
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < p; j++) {
-                for (int k = 0; k < n; k++) {
-                    result[i][j] += a[i][k] * b[k][j];
-                }
-            }
+    public static int[][] calculateMatrix(int[][] result, int[][] arr, int n) {
+        int[][] temp;
+        if (n == 0) {
+            return result;
         }
-
-        return result;
+        //8 4 2 1
+        //5 4 2 1
+        if (n % 2 == 0) {
+            temp = calculateMatrix(result, arr, n / 2);
+            return multiplyMatrix(temp, temp);
+        } else {
+            temp = calculateMatrix(result, arr, n - 1);
+            return multiplyMatrix(temp, arr);
+        }
     }
 
-    public static int[][] calculateMatrixPower(int[][] matrix, int power) {
-        int[][] result = new int[matrix.length][matrix.length];
-        // Initialize result matrix as identity matrix
-        for (int i = 0; i < matrix.length; i++) {
-            result[i][i] = 1;
-        }
-
-        while (power > 0) {
-            if (power % 2 == 1) {
-                result = multiplyMatrices(result, matrix);
+    private static int[][] multiplyMatrix(int[][] result, int[][] arr) {
+        int[][] temp = new int[arr.length][arr.length];
+        //矩阵乘法，矩阵第一行和另一个矩阵的第一列到最后一列相乘，
+        //相应的数值的位置是相应的行标，列标
+        //1 2 1 2
+        //3 4 3 4
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < arr.length; j++) {
+                int sum = 0;
+                for (int k = 0; k < arr.length; k++) {
+                    sum += result[i][k] * arr[k][j];
+                }
+                temp[i][j] = sum;
             }
-            matrix = multiplyMatrices(matrix, matrix);
-            power /= 2;
         }
-
-        return result;
+        return temp;
     }
 }
